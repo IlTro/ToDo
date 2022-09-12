@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>ToDo</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,900;1,400&display=swap" rel="stylesheet">
+	</head>
+	<body>
+        <div class="container">
+            <div class="title">
+                ToDo
+            </div>
+            <input type="text" size="40" placeholder="I want to...">
+            <div class="controls">
+                <div class="buttons">
+                    <button>All</button>
+                    <button>Done</button>
+                    <button>Undone</button>
+                </div>
+                <button class="sort">Sort by Date ⇧⇩</button>
+            </div>
+            <div class="list">
+                <div class="task"> 
+                    <div class="task-left"> <button class="check">✓</button> Do something </div> 
+                    <div class="task-right"> <div class="date">10/04/2020</div> <button class="trash">🗑</button> </div>
+                </div>
+                <div class="task"> 
+                    <div class="task-left"> <button class="check">✓</button> Do something else </div> 
+                    <div class="task-right"> <div class="date">10/04/2020</div> <button class="trash">🗑</button> </div>
+                </div>
+            </div>
+            <div class="pages">
+                <button class="page-btn page-btn-prev" >«</button>
+                <button class="page-btn ">1</button>
+                <button class="page-btn page-btn-current">2</button>
+                <button class="page-btn page-btn-next">»</button>
+            </div>
+        </div>
+	</body>
+</html>
