@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { getTasksAPI, addTaskAPI, removeTaskAPI, updateTaskAPI} from "./Utility/Services";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Input from "./Components/Input";
 import List from "./Components/List";
@@ -7,34 +8,40 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [mainInput, setMainInput] = useState("");
 
+  useEffect(() => {
+    getTasksAPI().then((response) => setTasks(response));
+  }, []);
+
   const addTask = () => {
-    const newTasks = [
-      ...tasks,
-      {
-        id: new Date().getTime(),
-        text: mainInput,
-        isDone: false,
-        date: new Date(),
-      },
-    ];
-    setTasks(newTasks);
-    setMainInput("");
+    addTaskAPI(mainInput).then((response) =>{
+      const newTasks = [
+        ...tasks,
+        response,
+      ];
+      setTasks(newTasks);
+      setMainInput("");
+    })
   };
 
-  const removeTask = (id) => {
-    const newTasks = tasks.filter((task) => task.id !== id);
-    setTasks(newTasks);
+  const removeTask = (uuid) => {
+    removeTaskAPI(uuid).then((response) => {
+      const newTasks = tasks.filter((task) => task.uuid !== uuid);
+      setTasks(newTasks);
+    })
   };
 
-  const setCheck = (id) => {
-    const newTasks = tasks.map((task) => {
-      if (task.id === id) {
-        const copy = { ...task, isDone: !task.isDone };
-        return copy;
-      }
-      return task;
-    });
-    setTasks(newTasks);
+  const setCheck = (uuid) => {
+    const updatedTask = tasks.find(task => task.uuid === uuid)
+    updatedTask.done = !updatedTask.done;
+    updateTaskAPI(updatedTask).then((response) => {
+      const newTasks = tasks.map((task) => {
+        if (task.uuid === uuid) {
+          return updatedTask;
+        }
+        return task;
+      });
+      setTasks(newTasks);
+    })
   };
 
   const editText = (id, text) => {

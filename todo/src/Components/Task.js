@@ -29,22 +29,22 @@ function Task({ task, editText, onCheckClick, onTrashClick }) {
     <div className="task">
       <div className="left">
         <button className="check" onClick={onCheckClick}>
-          {task.isDone ? "✓" : ""}
+          {task.done ? "✓" : ""}
         </button>
         {edit ? (
           <input
             ref={input}
-            defaultValue={task.text}
+            defaultValue={task.name}
             onKeyDown={(e) => inputOnKeyDown(e)}
             onBlur={() => setEdit(false)}
           />
         ) : (
-          <div onDoubleClick={(e) => onTextClick(e)}>{task.text}</div>
+          <div onDoubleClick={(e) => onTextClick(e)}>{task.name}</div>
         )}
       </div>
       <div className="right">
         <div className="date">
-          {task.date ? task.date.toLocaleDateString() : ""}
+          {new Date(task.createdAt).toLocaleDateString()}
         </div>
         <button className="trash" onClick={onTrashClick}>
           🗑

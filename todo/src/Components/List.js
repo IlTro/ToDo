@@ -6,6 +6,7 @@ import Button from "./Button";
 const filters = { ALL: 0, DONE: 1, UNDONE: 2 };
 
 function List({ list, onCheckClick, onTrashClick, editText }) {
+
   const [filter, setFilter] = useState(filters.ALL);
   const [sort, setSort] = useState(false);
   const [page, setPage] = useState(0);
@@ -18,9 +19,9 @@ function List({ list, onCheckClick, onTrashClick, editText }) {
     if (sort) drawList.reverse();
 
     if (filter === filters.DONE) {
-      drawList = drawList.filter((task) => task.isDone);
+      drawList = drawList.filter((task) => task.done);
     } else if (filter === filters.UNDONE) {
-      drawList = drawList.filter((task) => !task.isDone);
+      drawList = drawList.filter((task) => !task.done);
     }
 
     const newPagesAmount = Math.trunc((drawList.length - 1) / 5);
@@ -48,11 +49,11 @@ function List({ list, onCheckClick, onTrashClick, editText }) {
       <div className="list">
         {taskList.map((task) => (
           <Task
-            key={task.id}
+            key={task.uuid}
             task={task}
-            onCheckClick={() => onCheckClick(task.id)}
-            onTrashClick={() => onTrashClick(task.id)}
-            editText={(text) => editText(task.id, text)}
+            onCheckClick={() => onCheckClick(task.uuid)}
+            onTrashClick={() => onTrashClick(task.uuid)}
+            editText={(text) => editText(task.uuid, text)}
           />
         ))}
       </div>
