@@ -1,0 +1,18 @@
+.mainButton{
+    background-color: transparent;
+    border-color: rgb(80, 80, 80);
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1.5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.mainButton:hover{
+    background-color:rgba(160, 160, 160, 0.5)
+}
+
+.mainButton:active{
+    background-color: transparent;
+}
+

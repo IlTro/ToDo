@@ -1,0 +1,38 @@
+.pages{
+    width: fit-content;
+    align-self: center;
+    background-color: transparent;
+    border-color: rgb(80, 80, 80);
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    display: flex;
+    overflow:hidden;
+}
+
+.tasks{
+    display: flex;
+    flex-direction: column;
+}
+
+.page-btn{
+    border: none !important;
+    border-radius: 0px;
+    border-right: solid;
+    border-width: 1px;
+    border-color: rgb(80, 80, 80);
+}
+
+.page-btn-current{
+    background-color: rgba(160, 160, 160, 0.5) !important;
+}
+
+.page-btn-prev{
+    border-right: solid;
+    border-width: 1px;
+    border-color: rgb(80, 80, 80);
+}
+
+.page-btn-next{
+    border: none;
+}

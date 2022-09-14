@@ -1,0 +1,56 @@
+.task{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    border-color: rgb(80, 80, 80);
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1.5px;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+.left{
+    display: flex;
+    align-items: center;
+}
+
+.right{
+    display: flex;
+    align-items: center;
+}
+
+.check{
+    margin-right: 5px;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border-color: rgb(80, 80, 80);
+    border-style: solid;
+    border-radius: 20px;
+    border-width: 1.5px;
+}
+
+.check:hover{
+    color: rgba(0, 0, 0, 0.25);
+}
+
+.check:active{
+    color: transparent;
+}
+
+.trash{
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border: none;
+}
+
+.date{
+    color: rgb(80, 80, 80);
+    font-style: italic;
+    font-size: 12px;
+}

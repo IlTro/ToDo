@@ -1,0 +1,36 @@
+.main{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 400px;
+}
+
+.title{
+  text-align: center;
+  color: rgb(80, 80, 80);
+  font-weight: 900;
+  font-size: 80px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.controls{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sortButton{
+  display: flex;
+  flex-direction: row;
+  border: none;
+}
