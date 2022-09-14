@@ -1,13 +1,13 @@
 import "./Task.css";
 import React, { useState, useRef, useEffect } from "react";
 
-function Task(props) {
+function Task({ task, editText, onCheckClick, onTrashClick }) {
   const [edit, setEdit] = useState(false);
   const input = useRef(null);
 
   function inputOnKeyDown(event) {
     if (event.key === "Enter") {
-      props.editText(event.target.value);
+      editText(event.target.value);
       setEdit(false);
     }
     if (event.key === "Escape") {
@@ -28,25 +28,25 @@ function Task(props) {
   return (
     <div className="task">
       <div className="left">
-        <button className="check" onClick={props.onCheckClick}>
-          {props.status ? "✓" : ""}
+        <button className="check" onClick={onCheckClick}>
+          {task.isDone ? "✓" : ""}
         </button>
         {edit ? (
           <input
             ref={input}
-            defaultValue={props.text}
+            defaultValue={task.text}
             onKeyDown={(e) => inputOnKeyDown(e)}
             onBlur={() => setEdit(false)}
           />
         ) : (
-          <div onClick={(e) => onTextClick(e)}>{props.text}</div>
+          <div onDoubleClick={(e) => onTextClick(e)}>{task.text}</div>
         )}
       </div>
       <div className="right">
         <div className="date">
-          {props.date ? props.date.toLocaleDateString() : ""}
+          {task.date ? task.date.toLocaleDateString() : ""}
         </div>
-        <button className="trash" onClick={props.onTrashClick}>
+        <button className="trash" onClick={onTrashClick}>
           🗑
         </button>
       </div>

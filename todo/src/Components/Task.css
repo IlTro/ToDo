@@ -31,14 +31,7 @@
     border-style: solid;
     border-radius: 20px;
     border-width: 1.5px;
-}
-
-.check:hover{
-    color: rgba(0, 0, 0, 0.25);
-}
-
-.check:active{
-    color: transparent;
+    cursor: pointer;
 }
 
 .trash{
@@ -47,6 +40,7 @@
     height: 25px;
     background-color: transparent;
     border: none;
+    cursor: pointer;
 }
 
 .date{

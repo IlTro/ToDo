@@ -1,53 +1,70 @@
-import React, { useState } from 'react';
-import './App.css';
-import Input from './Components/Input';
-import List from './Components/List';
+import React, { useState } from "react";
+import "./App.css";
+import Input from "./Components/Input";
+import List from "./Components/List";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [mainInput, setMainInput] = useState("");
 
-  const addTask = (text) => {
-    setTasks([...tasks, { id: new Date().getTime(), text, status: false, date: new Date() }]);
-  }
+  const addTask = () => {
+    const newTasks = [
+      ...tasks,
+      {
+        id: new Date().getTime(),
+        text: mainInput,
+        isDone: false,
+        date: new Date(),
+      },
+    ];
+    setTasks(newTasks);
+    setMainInput("");
+  };
 
-  function setCheck(id) {
-    const asd = tasks.map(el => {
-      if (el.id === id) {
-        const copy = { ...el, status: !el.status }
-        return copy
-      };
-      return el;
-    })
-    setTasks(asd)///////
-  }
+  const removeTask = (id) => {
+    const newTasks = tasks.filter((task) => task.id !== id);
+    setTasks(newTasks);
+  };
 
-  function removeTask(id) {
-    setTasks(tasks.filter(el => el.id !== id));
-  }
+  const setCheck = (id) => {
+    const newTasks = tasks.map((task) => {
+      if (task.id === id) {
+        const copy = { ...task, isDone: !task.isDone };
+        return copy;
+      }
+      return task;
+    });
+    setTasks(newTasks);
+  };
 
-  function editText(id, text) {
-    setTasks(tasks.map(el => {
-      el.id === id && (el.text = text);/////
-      return el;
-    }))
-  }
+  const editText = (id, text) => {
+    const newTasks = tasks.map((task) => {
+      if (task.id === id) {
+        const copy = { ...task, text: text };
+        return copy;
+      }
+      return task;
+    });
+    setTasks(newTasks);
+  };
 
   return (
-    <div className='main'>
+    <div className="main">
       <div className="container">
-        <div className="title">
-          ToDo
-        </div>
-        <Input onKeyDown={e => {
-          if (e.key === "Enter") {
-            addTask(e.target.value);
-            e.target.value = "";
-            e.preventDefault();
-          }
-          if (e.key === "Escape") {
-            e.target.value = "";
-          }
-        }} />
+        <div className="title">ToDo</div>
+        <Input
+          value={mainInput}
+          onChange={(e) => setMainInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              addTask();
+              e.preventDefault();
+            }
+            if (e.key === "Escape") {
+              setMainInput("");
+            }
+          }}
+        />
         <List
           list={tasks}
           onCheckClick={(id) => setCheck(id)}

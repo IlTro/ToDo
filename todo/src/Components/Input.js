@@ -1,15 +1,16 @@
-import './Input.css'
+import "./Input.css";
 
-function Input(props) {
+function Input({ value, onKeyDown, onChange }) {
   return (
-    <input 
+    <input
       className="mainInput"
       type="text"
       size="40"
       placeholder="I want to..."
-      onKeyDown = {props.onKeyDown}
-      >
-    </input>
+      onKeyDown={onKeyDown}
+      value={value}
+      onChange={onChange}
+    ></input>
   );
 }
 
