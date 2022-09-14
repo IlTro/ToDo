@@ -5,12 +5,10 @@ import Button from "./Button";
 
 const filters = { ALL: 0, DONE: 1, UNDONE: 2 };
 
-function List({ list, onCheckClick, onTrashClick, editText }) {
+function List({ list, page, pages, onCheckClick, onTrashClick, editText, onPageChange }) {
 
   const [filter, setFilter] = useState(filters.ALL);
   const [sort, setSort] = useState(false);
-  const [page, setPage] = useState(0);
-  const [pages, setPages] = useState(0);
   const [taskList, setList] = useState([...list]);
 
   useEffect(() => {
@@ -24,12 +22,7 @@ function List({ list, onCheckClick, onTrashClick, editText }) {
       drawList = drawList.filter((task) => !task.done);
     }
 
-    const newPagesAmount = Math.trunc((drawList.length - 1) / 5);
-
-    drawList = drawList.slice(page * 5, (page + 1) * 5);
     setList(drawList);
-    setPages(newPagesAmount);
-    if (newPagesAmount < page) setPage(newPagesAmount);
   }, [list, filter, sort, page]);
 
   return (
@@ -61,20 +54,20 @@ function List({ list, onCheckClick, onTrashClick, editText }) {
         <div className="pages">
           <Button
             className="page-btn page-btn-prev"
-            onClick={() => setPage(0)}
+            onClick={() => onPageChange(0)}
             text="«"
           />
           {[...Array(pages + 1)].map((element, i) => (
             <Button
               key={"pb" + i}
               className={"page-btn " + (i === page && "page-btn-current")}
-              onClick={() => setPage(i)}
+              onClick={() => onPageChange(i)}
               text={i + 1}
             />
           ))}
           <Button
             className="page-btn page-btn-next"
-            onClick={() => setPage(pages)}
+            onClick={() => onPageChange(pages)}
             text="»"
           />
         </div>
