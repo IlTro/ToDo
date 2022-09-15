@@ -1,46 +1,25 @@
 import "./List.css";
-import React, { useState, useEffect } from "react";
 import Task from "./Task";
 import Button from "./Button";
 
-const filters = { ALL: 0, DONE: 1, UNDONE: 2 };
-
-function List({ list, page, pages, onCheckClick, onTrashClick, editText, onPageChange }) {
-
-  const [filter, setFilter] = useState(filters.ALL);
-  const [sort, setSort] = useState(false);
-  const [taskList, setList] = useState([...list]);
-
-  useEffect(() => {
-    let drawList = [...list];
-
-    if (sort) drawList.reverse();
-
-    if (filter === filters.DONE) {
-      drawList = drawList.filter((task) => task.done);
-    } else if (filter === filters.UNDONE) {
-      drawList = drawList.filter((task) => !task.done);
-    }
-
-    setList(drawList);
-  }, [list, filter, sort, page]);
+function List({ list, page, pages, filter, sort, onCheckClick, onTrashClick, editText, onPageChange }) {
 
   return (
     <div className="tasks">
       <div className="controls">
         <div className="buttons">
-          <Button text="All" onClick={() => setFilter(filters.ALL)} />
-          <Button text="Done" onClick={() => setFilter(filters.DONE)} />
-          <Button text="Undone" onClick={() => setFilter(filters.UNDONE)} />
+          <Button text="All" className={!filter.filter && "page-btn-current" } onClick={() => filter.setFilter(filter.filters.ALL)} />
+          <Button text="Done" className={filter.filter === filter.filters.DONE && "page-btn-current" } onClick={() => filter.setFilter(filter.filters.DONE)} />
+          <Button text="Undone" className={filter.filter === filter.filters.UNDONE && "page-btn-current" } onClick={() => filter.setFilter(filter.filters.UNDONE)} />
         </div>
         <Button
           className="sortButton"
-          text={sort ? "Sort by Date ⇧" : "Sort by Date ⇩"}
-          onClick={() => setSort(!sort)}
+          text={sort.sort ? "Sort by Date ⇧" : "Sort by Date ⇩"}
+          onClick={() => sort.setSort(!sort.sort)}
         />
       </div>
       <div className="list">
-        {taskList.map((task) => (
+        {list.map((task) => (
           <Task
             key={task.uuid}
             task={task}
