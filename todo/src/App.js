@@ -10,52 +10,43 @@ import Input from "./Components/Input";
 import List from "./Components/List";
 import Notification from "./Components/Notification";
 
-const filters = { ALL: null, DONE: "done", UNDONE: "undone" };
+const FILTERS = { ALL: null, DONE: "done", UNDONE: "undone" };
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [mainInput, setMainInput] = useState("");
-  const [page, setPage] = useState(0);
-  const [sort, setSort] = useState(true);
-  const [taskCount, setTaskCount] = useState(0);
-  const [filter, setFilter] = useState(filters.ALL);
+  const [listState, setListState] = useState({
+    page: 0,
+    sort: true,
+    taskCount: 0,
+    filter: FILTERS.ALL,
+  });
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const query = {
-      order: "asc",
+      order: listState.sort ? "asc" : "desc",
       pp: 5,
-      page: 1,
+      page: listState.page + 1,
     };
+    if (listState.filter) query.filterBy = listState.filter;
     getTasksAPI(query)
       .then((response) => {
-        setTasks(response.data.tasks);
-        setTaskCount(response.data.count);
-      })
-      .catch((err) => {
-        setError(err.response.data.message);
-      });
-  }, []);
-
-  useEffect(() => {
-    const query = {
-      order: sort ? "asc" : "desc",
-      pp: 5,
-      page: page + 1,
-    };
-    if (filter !== null) query.filterBy = filter;
-    getTasksAPI(query)
-      .then((response) => {
-        setTasks(response.data.tasks);
-        if (taskCount !== response.data.count) {
-          setPage(Math.min(page, Math.trunc((response.data.count - 1) / 5)));
-          setTaskCount(response.data.count);
+        if (listState.taskCount !== response.data.count) {
+          updateListState({
+            page: Math.min(
+              listState.page,
+              Math.trunc((response.data.count - 1) / 5)
+            ),
+            taskCount: response.data.count,
+          });
         }
+        setTasks(response.data.tasks);
       })
       .catch((err) => {
         setError(err.response.data.message);
       });
-  }, [filter, page, sort, taskCount]);
+  }, [listState]);
 
   const addTask = () => {
     addTaskAPI(mainInput)
@@ -64,7 +55,7 @@ function App() {
           const newTasks = [...tasks, response.data];
           setTasks(newTasks);
         }
-        setTaskCount(taskCount + 1);
+        updateListState({ taskCount: listState.taskCount + 1 });
         setMainInput("");
       })
       .catch((err) => {
@@ -76,11 +67,11 @@ function App() {
     removeTaskAPI(uuid)
       .then((response) => {
         const newTasks = tasks.filter((task) => task.uuid !== uuid);
-        const pages = Math.trunc((taskCount - 2) / 5);
+        const pages = Math.trunc((listState.taskCount - 2) / 5);
+        const page =
+          listState.page > pages ? listState.page - 1 : listState.page;
+        updateListState({ taskCount: listState.taskCount - 1, page });
         setTasks(newTasks);
-        setTaskCount(taskCount - 1);
-        if (page > pages) setPage(page - 1);
-        else setPage(page);
       })
       .catch((err) => {
         setError(err.response.data.message);
@@ -88,13 +79,13 @@ function App() {
   };
 
   const setCheck = (uuid) => {
-    const updatedTask = tasks.find((task) => task.uuid === uuid);
+    const updatedTask = { ...tasks.find((task) => task.uuid === uuid) };
     updatedTask.done = !updatedTask.done;
     updateTaskAPI(updatedTask)
       .then((response) => {
         const newTasks = tasks.map((task) => {
           if (task.uuid === uuid) {
-            return updatedTask;
+            return response.data;
           }
           return task;
         });
@@ -112,7 +103,7 @@ function App() {
       .then((response) => {
         const newTasks = tasks.map((task) => {
           if (task.uuid === uuid) {
-            return updatedTask;
+            return response.data;
           }
           return task;
         });
@@ -121,6 +112,10 @@ function App() {
       .catch((err) => {
         setError(err.response.data.message);
       });
+  };
+
+  const updateListState = (newState) => {
+    setListState({ ...listState, ...newState });
   };
 
   return (
@@ -142,11 +137,11 @@ function App() {
         />
         <List
           list={tasks}
-          page={page}
-          pages={Math.trunc((taskCount - 1) / 5)}
-          filter={{ filter, filters, setFilter }}
-          sort={{ sort, setSort }}
-          onPageChange={(n) => setPage(n)}
+          page={listState.page}
+          pages={Math.trunc((listState.taskCount - 1) / 5)}
+          filter={{ filter: listState.filter, filters: FILTERS }}
+          sort={listState.sort}
+          updateListState={(state) => updateListState(state)}
           onCheckClick={(id) => setCheck(id)}
           onTrashClick={(id) => removeTask(id)}
           editText={(id, text) => editText(id, text)}
