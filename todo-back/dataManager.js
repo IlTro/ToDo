@@ -8,10 +8,11 @@ const updateLocalFile = () => {
 
 const readLocalFile = () => {
   fs.readFile("LocalStorage", "utf8", (err, data) => {
-    if(err){
+    if (err) {
       tempStorage = [];
+    } else {
+      tempStorage = JSON.parse(data);
     }
-    tempStorage = JSON.parse(data);
   });
 };
 
