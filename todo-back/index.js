@@ -11,7 +11,7 @@ import taskDelete from "./task/userid.delete.js";
 import dataManager from "./dataManager.js";
 
 const app = express();
-const port = config.get("host");
+const port = process.env.PORT;
 
 dataManager.readLocalFile();
 app.use(express.json())
