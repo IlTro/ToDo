@@ -4,7 +4,7 @@ import config from "config";
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import tasks from "./tasks/userid.get.js";
+import tasks from "./task/userid.get.js";
 import taskPost from "./task/userid.post.js";
 import taskPatch from "./task/userid.patch.js";
 import taskDelete from "./task/userid.delete.js";
