@@ -5,20 +5,11 @@ import dataManager from "../dataManager.js";
 
 const router = express.Router();
 
-router.post("/:userId", (req, res) => {
+router.delete("/:userId/:uuid", (req, res) => {
   const userId = uuidValidate(req.params.userId)
     ? req.params.userId
     : uuidv5(req.params.userId, config.get("uuidUserSpace"));
-  res.send(
-    dataManager.addEntry({
-      uuid: uuidv1(),
-      name: req.body.name,
-      done: req.body.done,
-      createdAt: req.body.createdAt,
-      updatedAt: req.body.updatedAt,
-      userId: userId,
-    })
-  );
+  res.send(dataManager.deleteEntry(userId, req.params.uuid));
 });
 
 export default router;

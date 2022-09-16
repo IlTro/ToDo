@@ -1,8 +1,10 @@
-const axios = require("axios").default;
+import * as axios from 'axios';
+console.log(process.env)
+console.log(process.env.REACT_APP_BACK_END_URL)
 
 export const getTasksAPI = async (params) => {
   const response = await axios.get(
-    "https://todo-api-learning.herokuapp.com/v1/tasks/1",
+    process.env.REACT_APP_BACK_END_URL + "/tasks/1",
     { params }
   );
   return response;
@@ -10,7 +12,7 @@ export const getTasksAPI = async (params) => {
 
 export const addTaskAPI = async (name) => {
   const response = await axios.post(
-    "https://todo-api-learning.herokuapp.com/v1/task/1",
+    process.env.REACT_APP_BACK_END_URL + "/task/1",
     {
       name,
       done: false,
@@ -23,14 +25,14 @@ export const addTaskAPI = async (name) => {
 
 export const removeTaskAPI = async (uuid) => {
   const response = await axios.delete(
-    "https://todo-api-learning.herokuapp.com/v1/task/1/" + uuid
+    process.env.REACT_APP_BACK_END_URL + "/task/1/" + uuid
   );
   return response;
 };
 
 export const updateTaskAPI = async (task) => {
   const response = await axios.patch(
-    "https://todo-api-learning.herokuapp.com/v1/task/1/" + task.uuid,
+    process.env.REACT_APP_BACK_END_URL + "/task/1/" + task.uuid,
     {
       name: task.name,
       done: task.done,

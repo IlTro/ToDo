@@ -44,6 +44,7 @@ function App() {
         setTasks(response.data.tasks);
       })
       .catch((err) => {
+        console.log(err);
         setError(err.response.data.message);
       });
   }, [listState]);
@@ -83,13 +84,17 @@ function App() {
     updatedTask.done = !updatedTask.done;
     updateTaskAPI(updatedTask)
       .then((response) => {
-        const newTasks = tasks.map((task) => {
-          if (task.uuid === uuid) {
-            return response.data;
-          }
-          return task;
-        });
-        setTasks(newTasks);
+        if (listState.filter) {
+          updateListState({taskCount: listState.taskCount - 1});
+        } else {
+          const newTasks = tasks.map((task) => {
+            if (task.uuid === uuid) {
+              return response.data;
+            }
+            return task;
+          });
+          setTasks(newTasks);
+        }
       })
       .catch((err) => {
         setError(err.response.data.message);
