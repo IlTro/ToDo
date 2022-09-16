@@ -15,9 +15,7 @@ const port = process.env.PORT;
 
 dataManager.readLocalFile();
 app.use(express.json())
-if(process.env.DEV) {
-  app.use(cors());
-}
+app.use(cors());
 app.use("/tasks", tasks);
 app.use("/task", taskPost);
 app.use("/task", taskPatch);
