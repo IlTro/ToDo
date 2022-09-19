@@ -5,11 +5,11 @@ import dataManager from "../dataManager.js";
 
 const router = express.Router();
 
-router.patch("/:userId/:uuid", (req, res) => {
+router.patch("/:userId/:uuid", async (req, res) => {
   const userId = uuidValidate(req.params.userId)
     ? req.params.userId
     : uuidv5(req.params.userId, config.get("uuidUserSpace"));
-  res.send(dataManager.updateEntry(userId, req.params.uuid, req.body));
+  res.send((await dataManager.updateEntry(userId, req.params.uuid, req.body))[1]);
 });
 
 export default router;
