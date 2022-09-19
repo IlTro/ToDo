@@ -3,12 +3,12 @@ import cors from 'cors';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import tasks from "./task/userid.get.js";
-import taskPost from "./task/userid.post.js";
-import taskPatch from "./task/userid.patch.js";
-import taskDelete from "./task/userid.delete.js";
-import login from "./login.post.js";
-import register from "./register.post.js"
+import tasks from "./task/task.get.js";
+import taskPost from "./task/task.post.js";
+import taskPatch from "./task/task.patch.js";
+import taskDelete from "./task/task.delete.js";
+import login from "./login/login.post.js";
+import register from "./login/register.post.js"
 
 const app = express();
 const port = process.env.PORT;

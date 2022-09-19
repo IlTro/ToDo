@@ -49,7 +49,7 @@ function App() {
               taskCount: response.data.count,
             });
           }
-          setTasks(response.data.tasks);
+          setTasks(response.data.tasks || []);
         })
         .catch((err) => {
           if (

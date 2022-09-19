@@ -15,7 +15,7 @@ router.post("/:userId", async (req, res, next) => {
   const entry = await dataManager.addEntry({
     name: req.body.name,
     done: req.body.done,
-    userId: userId,
+    userId,
   });
   res.send(entry);
 });

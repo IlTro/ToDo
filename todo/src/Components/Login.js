@@ -65,6 +65,11 @@ function Login({ setAuthReq }) {
             className={"ok-btn"}
             text={"Ok"}
             onClick={(e) => {
+              if (isRegister) {
+                register(username, password);
+              } else {
+                login(username, password);
+              }
               e.preventDefault();
             }}
           />

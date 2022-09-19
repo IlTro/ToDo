@@ -1,7 +1,9 @@
 import Sequelize, { where } from "sequelize";
 import crypto from "crypto";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-const sequelize = new Sequelize("todo", "postgres", "post", {
+const sequelize = new Sequelize(process.env.TABLE_NAME, process.env.TABLE_USER, process.env.TABLE_PASS, {
   dialect: "postgres",
   dialectOptions: {},
 });
@@ -58,9 +60,9 @@ try {
   console.error("Unable to init user database:", error);
 }
 
-const getEntrys = async (userid, params) => {
+const getEntrys = async (userId, params) => {
   const query = {
-    where: {userId: userid},
+    where: {userId},
     offset: (params.page - 1) * params.pp,
     limit: params.pp,
     order: [["createdAt", params.order.toUpperCase()]],
@@ -82,11 +84,11 @@ const addEntry = async (newEntry) => {
   return entry;
 };
 
-const updateEntry = async (userid, uuid, data) => {
+const updateEntry = async (userId, uuid, data) => {
   return await Task.update(data, {
     where: {
       uuid,
-      userId: userid,
+      userId,
     },
     returning: true,
     plain: true,

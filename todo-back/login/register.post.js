@@ -1,7 +1,7 @@
 import express from "express";
 import { v1 as uuidv1, v5 as uuidv5, validate as uuidValidate } from "uuid";
 import config from "config";
-import dataManager from "./dataManager.js";
+import dataManager from "../dataManager.js";
 
 const router = express.Router();
 
