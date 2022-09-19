@@ -2,8 +2,11 @@ import express from "express";
 import config from "config";
 import { v1 as uuidv1, v5 as uuidv5, validate as uuidValidate } from "uuid";
 import dataManager from "../dataManager.js";
+import {checkToken} from "../auth-check.js"
 
 const router = express.Router();
+
+router.use('/:userId',checkToken);
 
 router.post("/:userId", async (req, res, next) => {
   const userId = uuidValidate(req.params.userId)

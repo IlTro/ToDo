@@ -1,4 +1,5 @@
 import Sequelize from "sequelize";
+import crypto from "crypto";
 
 const sequelize = new Sequelize("todo", "postgres", "post", {
   dialect: "postgres",
@@ -6,6 +7,7 @@ const sequelize = new Sequelize("todo", "postgres", "post", {
 });
 
 class Task extends Sequelize.Model {}
+class User extends Sequelize.Model {}
 
 Task.init(
   {
@@ -29,10 +31,31 @@ Task.init(
   }
 );
 
+User.init(
+  {
+    username: {
+      type: Sequelize.DataTypes.TEXT,
+    },
+    password: {
+      type: Sequelize.DataTypes.TEXT,
+    },
+  },
+  {
+    sequelize,
+    modelName: "User",
+  }
+);
+
 try {
   await Task.sync();
 } catch (error) {
-  console.error("Unable to init database:", error);
+  console.error("Unable to init task database:", error);
+}
+
+try {
+  await User.sync();
+} catch (error) {
+  console.error("Unable to init user database:", error);
 }
 
 const getEntrys = async (userid, params) => {
@@ -69,11 +92,35 @@ const updateEntry = async (userid, uuid, data) => {
 };
 
 const deleteEntry = async (userId, uuid) => {
-  return await Task.destroy({ where: { uuid, userId }}).then(()=>{
-    return true;
-  }).catch(()=>{
-    return false
-  })
+  return await Task.destroy({ where: { uuid, userId } })
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
 };
 
-export default { addEntry, getEntrys, updateEntry, deleteEntry };
+const isUser = async (username, password) => {
+  return true;
+};
+
+const getHmac = async (username) => {
+  const header = JSON.stringify({
+    alg: "HS256",
+    typ: "JWT",
+  });
+  const payload = JSON.stringify({
+    name: username,
+  });
+  const signature = crypto
+    .createHmac("sha256", process.env.JWT_SECRET)
+    .update(
+      Buffer.from(header).toString("base64") +
+        "." +
+        Buffer.from(payload).toString("base64")
+    );
+  return signature.digest("base64");
+};
+
+export default { addEntry, getEntrys, updateEntry, deleteEntry, isUser, getHmac };
