@@ -5,17 +5,22 @@ import dataManager from "./dataManager.js";
 
 const router = express.Router();
 
-router.post("/login", async (req, res, next) => {
-  if (await dataManager.login(req.body.username, req.body.password)) {
+router.post("/register", async (req, res, next) => {
+  if (! await dataManager.isUser(req.body.username)) {
     const userId = uuidv5(req.body.username, config.get("uuidUserSpace"));
+    dataManager.addUser(req.body.username, req.body.password);
     res.json({
       success: true,
-      message: "Authentication successful!",
+      message: "Created",
       token: await dataManager.getHmac(userId),
     });
   } else {
-    res.sendStatus(403);
+    res.json({
+      success: false,
+      message: "User already exsist",
+    });
   }
+  return true;
 });
 
 export default router;

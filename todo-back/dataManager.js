@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { where } from "sequelize";
 import crypto from "crypto";
 
 const sequelize = new Sequelize("todo", "postgres", "post", {
@@ -60,16 +60,17 @@ try {
 
 const getEntrys = async (userid, params) => {
   const query = {
+    where: {userId: userid},
     offset: (params.page - 1) * params.pp,
     limit: params.pp,
     order: [["createdAt", params.order.toUpperCase()]],
   };
   if (params.filterBy) {
     if (params.filterBy === "done") {
-      query.where = { done: true };
+      query.where = {...query.where, done: true };
     }
     if (params.filterBy === "undone") {
-      query.where = { done: false };
+      query.where = {...query.where, done: false };
     }
   }
   const { count, rows } = await Task.findAndCountAll(query);
@@ -85,6 +86,7 @@ const updateEntry = async (userid, uuid, data) => {
   return await Task.update(data, {
     where: {
       uuid,
+      userId: userid,
     },
     returning: true,
     plain: true,
@@ -101,9 +103,20 @@ const deleteEntry = async (userId, uuid) => {
     });
 };
 
-const isUser = async (username, password) => {
-  return true;
+const login = async (username, password) => {
+  const responce = await User.findOne({where: {username, password}});
+  return responce
 };
+
+const isUser = async (username) => {
+  const responce = await User.findOne({where: {username}});
+  return responce
+};
+
+const addUser = async (username, password) => {
+  const responce = await User.create({username, password});
+  return responce
+}
 
 const getHmac = async (username) => {
   const header = JSON.stringify({
@@ -123,4 +136,4 @@ const getHmac = async (username) => {
   return signature.digest("base64");
 };
 
-export default { addEntry, getEntrys, updateEntry, deleteEntry, isUser, getHmac };
+export default { addEntry, getEntrys, updateEntry, deleteEntry, isUser, getHmac, login, addUser };

@@ -1,12 +1,12 @@
 import "./Input.css";
 
-function Input({ value, onKeyDown, onChange }) {
+function Input({ value, onKeyDown, onChange, placeholder }) {
   return (
     <input
       className="mainInput"
       type="text"
       size="40"
-      placeholder="I want to..."
+      placeholder={placeholder}
       onKeyDown={onKeyDown}
       value={value}
       onChange={onChange}

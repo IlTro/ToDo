@@ -15,13 +15,13 @@ export const checkToken = async (req, res, next) => {
     if ((await dataManager.getHmac(userId)) === token) {
       next();
     } else {
-      return res.json({
+      return res.status(400).json({
         success: false,
         message: "Auth Fail",
       });
     }
   } else {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: "No Auth",
     });
